@@ -3,13 +3,14 @@
 #
 
 # Name of your site (displayed in the header)
-name: Your Name
+name: Sandra Montejano Cánovas
 
 # Short bio or description (displayed in the header)
-description: Web Developer from Somewhere
+description: Blog de la asignatura de Visión Robótica, donde iré publicando las actualizaciones de mis prácticas.
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
+# Cambia la URL aquí para poner la imagen que subiste a 'assets/images/foto-perfil.jpg'
+avatar: /assets/images/header-vision-robotica.jpg
 
 #
 # Flags below are optional
@@ -17,37 +18,27 @@ avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/je
 
 # Includes an icon in the footer for each username you enter
 footer-links:
-  dribbble:
-  email:
-  facebook:
-  flickr:
-  github: barryclark/jekyll-now
-  instagram:
-  linkedin:
-  pinterest:
-  rss: # just type anything here for a working RSS icon
-  twitter: jekyllrb
-  stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
-  youtube: # channel/<your_long_string> or user/<user-name>
-  googleplus: # anything in your profile username that comes after plus.google.com/
-
+  github: tu-usuario  # Reemplaza con tu nombre de usuario de GitHub
+  twitter: tuusuario  # Reemplaza con tu nombre de usuario de Twitter
+  # Añadir otros enlaces de redes sociales si lo deseas
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
-# You can find your shortname on the Settings page of your Disqus account
+# Puedes dejar esto vacío si no estás usando Disqus
 disqus:
 
 # Enter your Google Analytics web tracking code (e.g. UA-2110908-2) to activate tracking
+# Puedes dejar esto vacío si no estás usando Google Analytics
 google_analytics:
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url:
+url: "https://tu-usuario.github.io"  # Asegúrate de poner tu URL aquí
 
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
 # and NOT your User repository (http://yourusername.github.io)
 # then add in the baseurl here, like this: "/repository-name"
-baseurl: ""
+baseurl: ""  # Deja vacío si estás usando la raíz del repositorio
 
 #
 # !! You don't need to change any of the configuration flags below !!
@@ -70,12 +61,12 @@ kramdown:
 
 # Set the Sass partials directory, as we're using @imports
 sass:
-  style: :expanded # You might prefer to minify using :compressed
+  style: :expanded  # Puedes usar :compressed si prefieres que el CSS sea más pequeño
 
 # Use the following plug-ins
 gems:
-  - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
-  - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
+  - jekyll-sitemap  # Create a sitemap using the official Jekyll sitemap gem
+  - jekyll-feed  # Create an Atom feed using the official Jekyll feed gem
 
 # Exclude these files from your production _site
 exclude:
