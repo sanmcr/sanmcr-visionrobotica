@@ -40,6 +40,14 @@ body {
   width: 100%;
 }
 
+/* Estilo para la imagen de perfil */
+.avatar {
+  width: 150px;  /* Ajusta el tamaño de la imagen según lo desees */
+  height: 150px;
+  border-radius: 50%;  /* Forma redonda */
+  object-fit: cover;  /* Ajusta la imagen para que no se deforme */
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: $helveticaNeue;
   color: $darkerGray;
