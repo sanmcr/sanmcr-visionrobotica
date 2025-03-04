@@ -3,17 +3,22 @@ layout: post
 title: Follow Line
 ---
 
-# Reporte Técnico Detallado: Implementación de Seguimiento de Línea con PID en Robótica
+# Reporte Técnico Detallado: Implementación y Modificaciones del Seguimiento de Línea en Diferentes Circuitos
 
-## Circuito Simple
 
 ## 1. Introducción
-Este proyecto tiene como objetivo la implementación de un sistema de seguimiento de línea utilizando un robot autónomo controlado por visión computacional y un controlador PID (Proporcional-Integrativo-Derivativo). La idea es permitir que el robot siga una línea roja sobre un fondo blanco, ajustando su dirección y velocidad basándose en el análisis de imágenes en tiempo real. La detección de la línea se realiza mediante el uso de filtros y técnicas avanzadas de procesamiento de imágenes, y el comportamiento del robot se ajusta utilizando un controlador PID para mantener el seguimiento eficiente y estable.
-Durante el proceso, se presentaron varios desafíos, como la detección precisa de la línea en diferentes condiciones de iluminación y la gestión de los giros del robot. Este informe explica en detalle cómo se abordaron estos problemas, las técnicas utilizadas y los resultados obtenidos.
+
+Este documento detalla la implementación del sistema de seguimiento de línea mediante visión computacional y control PID en un robot autónomo. Se presentan las soluciones técnicas empleadas para mejorar la estabilidad y eficiencia del sistema en dos tipos de circuitos:
+
+Circuito Simple: Implementación base con ajustes generales en el control PID y procesamiento de imágenes.
+
+Circuito Ackerman: Modificaciones específicas para mejorar el rendimiento en un circuito con giros más cerrados y restricciones adicionales en la dirección del robot.
+
+El objetivo principal fue optimizar la precisión de seguimiento de la línea roja en diferentes condiciones, minimizando oscilaciones y mejorando la estabilidad en curvas*
 
 
 
-
+## Circuito Simple
 
 ## 2. Descripción del Proceso y Soluciones Técnicas Implementadas
 
@@ -271,6 +276,7 @@ Los cambios implementados permitieron mejorar significativamente el desempeño d
 
 A continuación se muestra el vídeo del resultado del circuito Ackerman:
 
+<iframe width="740" height="473" src="https://www.youtube.com/embed/HukxSjl8BiI" title="YouTube video player" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 ## 4. Conclusiones y Siguientes Pasos
