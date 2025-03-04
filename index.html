@@ -2,6 +2,18 @@
 layout: default
 ---
 
+<!-- Imagen de perfil -->
+<div class="site-avatar">
+  <img src="{{ site.avatar }}" alt="Avatar" class="avatar">
+</div>
+
+<!-- Información del sitio (nombre y descripción) -->
+<div class="site-info">
+  <h1>{{ site.name }}</h1>
+  <p class="site-description">{{ site.description }}</p>
+</div>
+
+<!-- Sección de los posts -->
 <div class="posts">
   {% for post in site.posts %}
     <article class="post">
