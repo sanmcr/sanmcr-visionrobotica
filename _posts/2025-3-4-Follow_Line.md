@@ -22,6 +22,9 @@ Durante el proceso, se presentaron varios desafíos, como la detección precisa 
 
 El sistema utiliza una cámara incorporada en el robot para capturar imágenes del entorno en tiempo real. Estas imágenes sirven como la entrada al sistema de visión por computadora y son procesadas a una alta frecuencia para permitir el seguimiento continuo de la línea.
 
+
+![Raw Image](/images/raw.jpeg)
+
 #### Conversión al Espacio de Color HSV
 Uno de los primeros pasos en el procesamiento de las imágenes es la conversión de la imagen del espacio de color BGR (azul, verde, rojo) a HSV (matiz, saturación, valor). El espacio HSV es particularmente útil en visión por computadora porque separa el componente de color (matiz) de los componentes de brillo (saturación y valor), lo que facilita la detección de colores específicos en condiciones de iluminación cambiantes.
 
@@ -48,6 +51,9 @@ mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
 mask = cv2.bitwise_or(mask1, mask2)
 ```
 
+![Mask Image](/images/mask.jpeg)
+
+
 #### Filtrado Morfológico
 
 Una vez que se ha generado la máscara de la línea roja, se aplica un filtro morfológico para reducir el ruido. Los filtros morfológicos como la operación de apertura y cierre se utilizan para limpiar la máscara y eliminar pequeñas manchas que no forman parte de la línea.
@@ -70,6 +76,9 @@ contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 Aquí se utiliza `cv2.RETR_EXTERNAL` para detectar solo los contornos externos, ya que la línea roja es el contorno principal que queremos rastrear.
 
+
+![Countor Image](/images/countors.jpeg)
+
 ### 2.3. Cálculo del Centro de la Línea
 
 Una vez que se han detectado los contornos, el siguiente paso es encontrar el centro de la línea en la imagen. Esto se hace calculando el centroide del contorno de la línea utilizando los momentos de la imagen. Los momentos proporcionan la información necesaria para calcular el centro de masa del contorno.
@@ -83,6 +92,7 @@ cY = int(M["m01"] / M["m00"])
 
 El cálculo del centro de la línea `(cX, cY)` es crucial para determinar la dirección en la que el robot debe moverse.
 
+![Center Image](/images/center.jpeg)
 
 ### 2.4. Control PID para Seguimiento de la Línea
 
@@ -142,7 +152,39 @@ else:
 ```
 
 
+## 3. Resultados y Evaluación
 
+### 3.1. Mejor Tiempo Obtenido
+
+El mejor tiempo registrado para completar el circuito fue de 139.98 segundos. Este tiempo representa una mejora con respecto a las primeras versiones del código, donde el robot sufría de inestabilidad al tomar las curvas y no lograba un seguimiento fluido de la línea.
+
+### 3.2. Visualization
+
+A continuación se muestra un vídeo del funcionamiento del código en el circuito simple:
+
+
+<iframe width="740" height="473" src="https://www.youtube.com/embed/GcyK_XPTnEQ" title="YouTube video player" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+### 3.3. Posibles Razones para el Tiempo Obtenido
+
+El tiempo obtenido, aunque satisfactorio, puede verse influenciado por varios factores, que incluyen:
+
+- Ajustes de Ganancias PID: Durante el proceso, se realizaron numerosos ajustes en las ganancias del controlador PID (Proporcional, Integral, Derivativo) para mejorar la estabilidad y la respuesta en las curvas. La reducción de las ganancias proporcionales y derivativas, y la eliminación de la componente integral, ayudaron a minimizar las oscilaciones en las curvas, pero aún podrían mejorar más en condiciones de curvas más cerradas.
+- Curvas y Rectas: El robot fue más eficiente en las rectas debido a la alta velocidad de avance, que fue ajustada dinámicamente según la curvatura. Sin embargo, las curvas más cerradas seguían siendo un desafío, donde el robot tuvo que reducir su velocidad considerablemente. Las estrategias para suavizar la dirección, como el filtro exponencial, también contribuyeron a reducir las oscilaciones, pero se mantuvieron ciertas oscilaciones al tomar giros muy cerrados.
+- Condiciones del Circuito: El circuito de pruebas también tiene un impacto importante en el tiempo final. Las características del trazado, como las curvas cerradas, el tiempo de recuperación cuando el robot pierde la línea, y la calidad de la visión computacional (ruido en la imagen o condiciones de luz) juegan un papel crucial en el rendimiento. Las condiciones ambientales y la precisión de la detección de la línea afectaron directamente la capacidad del robot para mantener el ritmo en el circuito.
+- Algoritmos de Recuperación: Cuando el robot no podía seguir la línea de forma continua, el sistema de recuperación entraba en acción. Este modo de recuperación permitía que el robot buscara la línea nuevamente de manera eficiente, pero con cierta penalización en el tiempo. Sin embargo, este ajuste es necesario para garantizar que el robot no se quede atascado, lo que afecta los tiempos globales.
+
+### 3.3. Consideraciones para Mejorar el Tiempo
+
+Aunque el tiempo de 139.98 segundos es un buen resultado, aún existen áreas de mejora:
+- Optimización del Control PID: Ajustar más finamente las ganancias del PID podría mejorar aún más la respuesta del robot en curvas cerradas, permitiéndole mantener una velocidad más alta sin perder estabilidad.
+- Mejora en el Algoritmo de Recuperación: La optimización de las estrategias de recuperación permitirá reducir el tiempo perdido cuando el robot se desvía de la línea. Un sistema más rápido y eficiente de búsqueda de la línea podría disminuir el tiempo total.
+- Condiciones de Visión: Mejorar las condiciones de iluminación y optimizar la cámara también puede ayudar a mejorar la detección de la línea, lo que reduce los tiempos perdidos por no identificar correctamente la línea.
+
+## 4. Conclusiones
+Este proyecto ha demostrado cómo el uso de técnicas avanzadas de visión por computadora, como la conversión de imágenes a HSV, la detección de contornos y el procesamiento morfológico, pueden ser efectivas para el seguimiento de una línea en robótica. El controlador PID ajustado dinámicamente permitió una respuesta estable y eficiente en curvas y rectas.
+Aunque los resultados fueron satisfactorios, se identificaron áreas de mejora, como la reducción de las oscilaciones en curvas extremadamente cerradas y la optimización del algoritmo de recuperación. Se recomienda seguir afinando los parámetros PID y explorar el uso de técnicas adicionales, como el aprendizaje automático, para mejorar aún más la robustez y eficiencia del sistema.
 
 
 
