@@ -5,6 +5,8 @@ title: Follow Line
 
 # Reporte Técnico Detallado: Implementación de Seguimiento de Línea con PID en Robótica
 
+## Circuito Simple
+
 ## 1. Introducción
 Este proyecto tiene como objetivo la implementación de un sistema de seguimiento de línea utilizando un robot autónomo controlado por visión computacional y un controlador PID (Proporcional-Integrativo-Derivativo). La idea es permitir que el robot siga una línea roja sobre un fondo blanco, ajustando su dirección y velocidad basándose en el análisis de imágenes en tiempo real. La detección de la línea se realiza mediante el uso de filtros y técnicas avanzadas de procesamiento de imágenes, y el comportamiento del robot se ajusta utilizando un controlador PID para mantener el seguimiento eficiente y estable.
 Durante el proceso, se presentaron varios desafíos, como la detección precisa de la línea en diferentes condiciones de iluminación y la gestión de los giros del robot. Este informe explica en detalle cómo se abordaron estos problemas, las técnicas utilizadas y los resultados obtenidos.
@@ -156,7 +158,7 @@ else:
 
 ### 3.1. Mejor Tiempo Obtenido
 
-El mejor tiempo registrado para completar el circuito fue de **136.56** segundos. Este tiempo representa una mejora con respecto a las primeras versiones del código, donde el robot sufría de inestabilidad al tomar las curvas y no lograba un seguimiento fluido de la línea.
+El mejor tiempo registrado para completar el circuito fue de 139.98 segundos. Este tiempo representa una mejora con respecto a las primeras versiones del código, donde el robot sufría de inestabilidad al tomar las curvas y no lograba un seguimiento fluido de la línea.
 
 ### 3.2. Visualization
 
@@ -177,7 +179,7 @@ El tiempo obtenido, aunque satisfactorio, puede verse influenciado por varios fa
 
 ### 3.3. Consideraciones para Mejorar el Tiempo
 
-Aunque el tiempo de 136.56 segundos es un buen resultado, aún existen áreas de mejora:
+Aunque el tiempo de 139.98 segundos es un buen resultado, aún existen áreas de mejora:
 - Optimización del Control PID: Ajustar más finamente las ganancias del PID podría mejorar aún más la respuesta del robot en curvas cerradas, permitiéndole mantener una velocidad más alta sin perder estabilidad.
 - Mejora en el Algoritmo de Recuperación: La optimización de las estrategias de recuperación permitirá reducir el tiempo perdido cuando el robot se desvía de la línea. Un sistema más rápido y eficiente de búsqueda de la línea podría disminuir el tiempo total.
 - Condiciones de Visión: Mejorar las condiciones de iluminación y optimizar la cámara también puede ayudar a mejorar la detección de la línea, lo que reduce los tiempos perdidos por no identificar correctamente la línea.
@@ -188,7 +190,94 @@ Aunque los resultados fueron satisfactorios, se identificaron áreas de mejora, 
 
 
 
+## Ackerman
 
+## Reporte de Modificaciones en el Seguimiento de Línea para el Circuito Ackerman
+
+## 1. Introducción 
+
+El presente documento detalla las modificaciones implementadas en el código original de seguimiento de línea para adaptarlo a las características del circuito Ackerman. Se han realizado ajustes en el control PID, el procesamiento de imágenes y la estrategia de ajuste de velocidad para mejorar la estabilidad y el rendimiento en este tipo de pista.
+
+## 2. Cambios Implementados
+
+### 2.1. Ajustes en el Control PID
+
+El control PID se ha recalibrado para mejorar la estabilidad del robot en el circuito Ackerman. Los cambios principales son:
+- Reducción de oscilaciones: Se modificaron los valores de las constantes PID, utilizando un KP_BASE más bajo (0.0065) para suavizar movimientos y un KD_BASE más alto (0.005) para mejorar la amortiguación de oscilaciones.
+- Menor acumulación de error: Se disminuyó la ganancia integral (KI_BASE = 0.000002) para evitar acumulaciones excesivas de error, lo cual es particularmente problemático en curvas cerradas.
+- Historial de errores: Se implementó un historial de errores con suavizado exponencial para reducir variaciones bruscas y mejorar la estabilidad.
+- PID dinámico: Se ajustan las ganancias Kp, Ki y Kd dinámicamente en función del error relativo al centro de la imagen, permitiendo mayor flexibilidad en rectas y curvas.
+
+**Código Relevante**:
+
+```python
+Kp = KP_BASE * (1.0 + 0.2 * abs(smoothed_error) / frame_center)
+Ki = KI_BASE * (1.0 - 0.1 * abs(smoothed_error) / frame_center)
+Kd = KD_BASE * (1.0 + 0.6 * abs(smoothed_error) / frame_center)
+```
+### 2.2. Modificaciones en la Estrategia de Velocidad
+
+El ajuste de velocidad se ha mejorado para que el robot adapte su velocidad en función de la curvatura detectada:
+- Velocidad más alta en rectas: Se estableció una velocidad de 18.0 en errores pequeños.
+- Velocidad moderada en curvas suaves: Se redujo la velocidad a 12.0 en errores intermedios.
+- Velocidad más baja en curvas cerradas: Se limitó la velocidad a 7.0 para evitar deslizamientos y pérdida de estabilidad en giros bruscos.
+
+**Código Relevante**:
+```python
+if abs(smoothed_error) < 10:
+    v = 18.0  # Velocidad alta en rectas
+elif abs(smoothed_error) < 30:
+    v = 12.0  # Velocidad moderada en curvas suaves
+else:
+    v = 7.0  # Velocidad reducida en curvas cerradas
+```
+
+### 2.3. Mejoras en la Suavización del Control
+
+Para evitar cambios bruscos en la dirección del robot:
+- Historial de errores: Se mantiene un buffer de 5 errores recientes y se calcula un error suavizado basado en el promedio.
+- Filtro exponencial: Se usa un factor de suavizado (alpha = 0.6) para reducir oscilaciones y cambios bruscos en la dirección.
+- Limitación de giros bruscos: Se restringió el ángulo de dirección a un valor máximo de ±0.35 para evitar giros extremos que desestabilicen el robot.
+
+**Código Relevante**:
+
+```python
+smoothed_steering = alpha * raw_steering + (1 - alpha) * smoothed_error
+smoothed_steering = max(-0.35, min(0.35, smoothed_steering))
+```
+
+### 2.4. Procesamiento de Imagen Mejorado
+
+Los cambios en la detección de la línea roja incluyen:
+- Mantenimiento de umbrales HSV: Se mantuvieron los rangos del color rojo pero se aplicaron filtros morfológicos más efectivos para eliminar ruido.
+- Uso de filtros de mediana y morfológicos: Se aplicó cv2.medianBlur() y operaciones de apertura y cierre para mejorar la detección de la línea.
+- Mejor manejo de contornos: Se sigue utilizando cv2.findContours(), priorizando siempre el contorno más grande como la línea principal.
+
+**Código Relevante**:
+
+```python
+mask = cv2.medianBlur(mask, 5)
+kernel = np.ones((5, 5), np.uint8)
+mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+```
+
+## 3. Evaluación del Rendimiento
+Los cambios implementados permitieron mejorar significativamente el desempeño del robot en el circuito Ackerman. Entre los resultados más relevantes se encuentran:
+- Mayor estabilidad en curvas cerradas.
+- Menor número de oscilaciones en giros.
+- Mejor aprovechamiento de la velocidad en rectas.
+- Tiempo total mejorado respecto a la versión anterior en el circuito estándar (**604.71** segundos).
+
+A continuación se muestra el vídeo del resultado del circuito Ackerman:
+
+
+
+## 4. Conclusiones y Siguientes Pasos
+
+Los cambios implementados lograron una mejor adaptación al circuito Ackerman, pero aún existen oportunidades de mejora:
+- Optimización de la velocidad en giros cerrados: Se podría implementar un sistema predictivo para anticipar la necesidad de reducir velocidad en curvas antes de alcanzarlas.
+- Implementación de un modelo de frenado progresivo: Para mejorar la transición entre velocidades y evitar cambios bruscos.
 
 
 
