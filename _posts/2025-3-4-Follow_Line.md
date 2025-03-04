@@ -184,7 +184,7 @@ El tiempo obtenido, aunque satisfactorio, puede verse influenciado por varios fa
 
 ### 3.3. Consideraciones para Mejorar el Tiempo
 
-Aunque el tiempo de 139.98 segundos es un buen resultado, aún existen áreas de mejora:
+Aunque el tiempo de 136.56 segundos es un buen resultado, aún existen áreas de mejora:
 - Optimización del Control PID: Ajustar más finamente las ganancias del PID podría mejorar aún más la respuesta del robot en curvas cerradas, permitiéndole mantener una velocidad más alta sin perder estabilidad.
 - Mejora en el Algoritmo de Recuperación: La optimización de las estrategias de recuperación permitirá reducir el tiempo perdido cuando el robot se desvía de la línea. Un sistema más rápido y eficiente de búsqueda de la línea podría disminuir el tiempo total.
 - Condiciones de Visión: Mejorar las condiciones de iluminación y optimizar la cámara también puede ayudar a mejorar la detección de la línea, lo que reduce los tiempos perdidos por no identificar correctamente la línea.
