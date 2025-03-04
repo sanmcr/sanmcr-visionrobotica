@@ -9,9 +9,11 @@ name: Visión Robótica
 description: Sandra
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: https://sanmcr.github.io/sanmcr-visionrobotica/images/avatar.jpg
+avatar: https://sanmcr.github.io/images/logo.png
 
-
+#
+# Flags below are optional
+#
 
 # Includes an icon in the footer for each username you enter
 footer-links:
