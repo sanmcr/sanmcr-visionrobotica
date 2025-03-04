@@ -1,5 +1,15 @@
----
----
+//
+// VARIABLES DE COLORES
+//
+$white: #ffffff;
+$lightGray: #f0f0f0;
+$gray: #bdc3c7;
+$darkGray: #7f8c8d;
+$darkerGray: #2c3e50;
+$black: #000000;
+$blue: #3498db;  // Azul brillante
+$blueHover: #1abc9c;  // Verde suave para hover
+$lightBlue: #2980b9;  // Azul más oscuro para la cabecera
 
 //
 // IMPORTS
@@ -18,7 +28,7 @@ html {
 }
 
 body {
-	background: $white;
+  background: $white;
   font: 18px/1.4 $helvetica;
   color: $darkGray;
 }
@@ -34,7 +44,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $helveticaNeue;
   color: $darkerGray;
   font-weight: bold;
-
   line-height: 1.7;
   margin: 1em 0 15px;
   padding: 0;
@@ -71,9 +80,9 @@ p {
 a {
   color: $blue;
   text-decoration: none;
-	cursor: pointer;
+  cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: $blueHover;  // Cambia el color del enlace al pasar el ratón
   }
 }
 
@@ -157,6 +166,7 @@ img {
 .masthead {
   padding: 20px 0;
   border-bottom: 1px solid $lightGray;
+  background-color: $lightBlue;  // Cambié el fondo de la cabecera a un azul más oscuro
 
   @include mobile {
     text-align: center;
@@ -165,8 +175,8 @@ img {
 
 .site-avatar {
   float: left;
-  width: 70px;
-  height: 70px;
+  width: 100px;  // Hice la imagen de perfil más grande
+  height: 100px; // Ajusté el tamaño de la imagen
   margin-right: 15px;
 
   @include mobile {
@@ -176,7 +186,7 @@ img {
   }
 
   img {
-    border-radius: 5px;
+    border-radius: 50%;  // Redondea la imagen
   }
 }
 
@@ -232,7 +242,7 @@ nav {
 
     @include mobile {
       margin: 0 10px;
-      color: $blue;
+      color: $blue;  // Cambié el color de los enlaces del nav a azul
     }
   }
 }
@@ -275,7 +285,7 @@ nav {
   margin-top: 50px;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
+  background-color: $lightGray;  // Fondo claro para el pie de página
 }
 
 footer {
@@ -284,6 +294,5 @@ footer {
 }
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
-// ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
 @import "highlights";
 @import "svg-icons";
